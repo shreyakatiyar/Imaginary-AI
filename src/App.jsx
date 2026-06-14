@@ -1,22 +1,31 @@
-// import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
+import { AnimatePresence } from 'framer-motion';
 import Modal from 'react-modal';
 import Text from './Text';
 import ImageGen from './ImageGen';
 import Home from './Home1';
+import NotFound from './NotFound';
 
 Modal.setAppElement('#root');
 
-const App = () => {
+const AnimatedRoutes = () => {
+  const location = useLocation();
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/text" element={<Text />} />
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={location.pathname}>
+        <Route path="/"      element={<Home />} />
+        <Route path="/text"  element={<Text />} />
         <Route path="/image" element={<ImageGen />} />
+        <Route path="*"      element={<NotFound />} />
       </Routes>
-    </Router>
+    </AnimatePresence>
   );
 };
+
+const App = () => (
+  <Router>
+    <AnimatedRoutes />
+  </Router>
+);
 
 export default App;
